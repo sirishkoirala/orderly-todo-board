@@ -8,14 +8,14 @@ import { Input } from "@/components/ui/input";
 
 const priorityClasses = {
   high: "border-l-4 border-red-500",
-  medium: "border-l-4 border-yellow-500",
+  medium: "border-l-4 border-amber-500",
   low: "border-l-4 border-blue-500"
 };
 
 const priorityBadges = {
-  high: "bg-red-100 text-red-800",
-  medium: "bg-yellow-100 text-yellow-800",
-  low: "bg-blue-100 text-blue-800"
+  high: "bg-red-900/50 text-red-200",
+  medium: "bg-amber-900/50 text-amber-200",
+  low: "bg-blue-900/50 text-blue-200"
 };
 
 const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
@@ -39,19 +39,25 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
     }
   };
 
+  const priorityStyles = {
+    low: "bg-blue-600 hover:bg-blue-700 text-white",
+    medium: "bg-amber-600 hover:bg-amber-700 text-white",
+    high: "bg-red-600 hover:bg-red-700 text-white",
+  };
+
   return (
-    <div className={`bg-white border rounded-lg p-4 flex items-center gap-3 ${priorityClasses[todo.priority]} transition-all hover:shadow`}>
-      <div className="mr-2 cursor-move text-gray-400">
+    <div className={`bg-gray-800 border border-gray-700 rounded-lg p-4 flex items-center gap-3 ${priorityClasses[todo.priority]} transition-all hover:shadow`}>
+      <div className="mr-2 cursor-move text-gray-500">
         <MoveIcon size={18} />
       </div>
       <Checkbox 
         checked={todo.completed}
         onCheckedChange={() => toggleComplete(todo.id)}
-        className="mr-2"
+        className="mr-2 border-gray-600"
       />
       
       <div className="flex-1">
-        <div className={`font-medium ${todo.completed ? 'line-through text-gray-400' : 'text-gray-800'}`}>
+        <div className={`font-medium ${todo.completed ? 'line-through text-gray-500' : 'text-gray-200'}`}>
           {todo.title}
         </div>
         <div className="flex items-center mt-1">
@@ -66,7 +72,7 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
           variant="outline" 
           size="sm" 
           onClick={() => setIsEditing(true)} 
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-400 hover:text-gray-200 bg-gray-700 border-gray-600"
         >
           <EditIcon size={16} />
         </Button>
@@ -74,34 +80,35 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
           variant="outline" 
           size="sm" 
           onClick={() => deleteTodo(todo.id)}
-          className="text-gray-500 hover:text-red-600"
+          className="text-gray-400 hover:text-red-400 bg-gray-700 border-gray-600"
         >
           <Trash2Icon size={16} />
         </Button>
       </div>
 
       <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent>
+        <DialogContent className="bg-gray-800 text-gray-200 border-gray-700">
           <DialogHeader>
-            <DialogTitle>Edit Task</DialogTitle>
+            <DialogTitle className="text-gray-200">Edit Task</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Task Title</label>
+              <label className="text-sm font-medium text-gray-300">Task Title</label>
               <Input
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
+                className="bg-gray-700 border-gray-600 text-white"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Priority</label>
-              <div className="flex gap-2">
+              <label className="text-sm font-medium text-gray-300">Priority</label>
+              <div className="grid grid-cols-3 gap-2">
                 <Button 
                   type="button"
                   onClick={() => setEditedPriority('low')}
                   variant={editedPriority === 'low' ? 'default' : 'outline'}
-                  className={`flex-1 ${editedPriority === 'low' ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
+                  className={`${editedPriority === 'low' ? priorityStyles.low : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'}`}
                 >
                   Low
                 </Button>
@@ -109,7 +116,7 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
                   type="button"
                   onClick={() => setEditedPriority('medium')}
                   variant={editedPriority === 'medium' ? 'default' : 'outline'}
-                  className={`flex-1 ${editedPriority === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : ''}`}
+                  className={`${editedPriority === 'medium' ? priorityStyles.medium : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'}`}
                 >
                   Medium
                 </Button>
@@ -117,7 +124,7 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
                   type="button"
                   onClick={() => setEditedPriority('high')}
                   variant={editedPriority === 'high' ? 'default' : 'outline'}
-                  className={`flex-1 ${editedPriority === 'high' ? 'bg-red-500 hover:bg-red-600' : ''}`}
+                  className={`${editedPriority === 'high' ? priorityStyles.high : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'}`}
                 >
                   High
                 </Button>
@@ -125,10 +132,17 @@ const TodoItem = ({ todo, toggleComplete, updateTodo, deleteTodo }) => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditing(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsEditing(false)}
+              className="bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600"
+            >
               Cancel
             </Button>
-            <Button onClick={handleEditSave}>
+            <Button 
+              onClick={handleEditSave}
+              className="bg-purple-700 hover:bg-purple-800 text-white"
+            >
               Save Changes
             </Button>
           </DialogFooter>

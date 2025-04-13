@@ -68,10 +68,10 @@ const TodoApp = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+      <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
+        <div className="bg-gradient-to-r from-purple-800 to-indigo-700 p-6">
           <h1 className="text-3xl font-bold text-white">Todo App</h1>
-          <p className="text-indigo-100 mt-1">Organize your tasks efficiently</p>
+          <p className="text-purple-200 mt-1">Organize your tasks efficiently</p>
         </div>
         
         <div className="p-6">
